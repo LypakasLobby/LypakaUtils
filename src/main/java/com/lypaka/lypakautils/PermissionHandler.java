@@ -1,21 +1,21 @@
 package com.lypaka.lypakautils;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.nodes.PermissionNode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PermissionHandler {
 
-    /**
-     * This boolean check for permissions is platform-independent. Meaning it will work for pure Forge, SpongeForge, and Spigot/Forge hybrids.
-     * (provided that the unstable Spigot/Forge hybrid of choice doesn't do some janky hacky shit with permission checks)
-     * It applies to commands as well as basically any other permission check (like "if have this permission, can click this block" for example)
-     * @param player
-     * @param permission
-     * @return
-     */
-    public static boolean hasPermission (ServerPlayerEntity player, String permission) {
+    // Used to store all my permissions across all of my mods for ease of access
+    public static Map<String, PermissionNode<Boolean>> permissions = new HashMap<>();
 
-        return PermissionAPI.hasPermission(player, permission);
+    public static boolean hasPermission (ServerPlayer player, String node) {
+
+        if (!permissions.containsKey(node)) return false;
+        return PermissionAPI.getPermission(player, permissions.get(node));
 
     }
 

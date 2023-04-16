@@ -1,15 +1,13 @@
 package com.lypaka.lypakautils;
 
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.ServerWorldInfo;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.LevelData;
 
 public class WorldDimGetter {
 
-    public static int getDimID (World world) {
+    public static int getDimID (Level world) {
 
-        ServerWorldInfo info = (ServerWorldInfo) world.getLevelData();
+        LevelData info = world.getLevelData();
         String worldDimension = world.dimension().location().toString();
         if (worldDimension.equalsIgnoreCase("minecraft:nether") || worldDimension.equalsIgnoreCase("minecraft:the_nether")) {
 

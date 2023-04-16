@@ -1,6 +1,6 @@
 package com.lypaka.lypakautils;
 
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.TextColor;
 
 public class FancyText {
 
@@ -22,9 +22,12 @@ public class FancyText {
      * @param unformattedText
      * @return
      */
-    public static StringTextComponent getFormattedText (String unformattedText) {
+    public static TextColor getFormattedText (String unformattedText) {
 
-        return new StringTextComponent(getFormattedString(unformattedText));
+        //TextColor
+        //TextComponentHelper
+        //return ChatFormatting.valueOf(unformattedText);
+        return TextColor.parseColor(unformattedText);
 
     }
 
