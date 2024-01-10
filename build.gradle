@@ -40,8 +40,8 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
-    compileOnly fileTree(dir: 'C:\\Users\\ryan9\\Documents\\GitHub\\LIBRARIES', include: ['Reforged.jar'])
-    compileOnly fileTree(dir: 'C:\\Users\\ryan9\\Documents\\GitHub\\LIBRARIES', include: ['spigot-1.16.5.jar'])
+    compileOnly fileTree(dir: 'F:\\Minecraft Development\\libs', include: ['Pixelmon.jar'])
+    compileOnly fileTree(dir: 'F:\\Minecraft Development\\libs', include: ['spigot-1.16.5.jar'])
     shadow group: 'ninja.leaping.configurate', name: 'configurate-hocon', version: '3.7.1'
     shadow group: 'ninja.leaping.configurate', name: 'configurate-core', version: '3.7.1'
     implementation 'com.zaxxer:HikariCP:4.0.3'
@@ -64,7 +64,7 @@ jar {
 
 shadowJar {
     configurations = [project.configurations.shadow]
-    archiveName = 'LypakaUtils-1.16.5-0.4.3.jar'
+    archiveName = 'LypakaUtils.jar'
 
 
     exclude "**/module-info.class"
