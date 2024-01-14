@@ -24,7 +24,7 @@ public class DeathListener {
 
     private static void putTheBitchBackIfMissing (ServerPlayerEntity player) {
 
-        UUID uuid = player.getUUID();
+        UUID uuid = player.getUniqueID();
         JoinListener.playerMap.entrySet().removeIf(entry -> entry.getKey().toString().equalsIgnoreCase(uuid.toString()));
         JoinListener.playerMap.put(uuid, player);
 

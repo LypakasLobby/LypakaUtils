@@ -17,10 +17,10 @@ public class WorldMap {
 
     public static void load() {
 
-        for (ServerWorld world : ServerLifecycleHooks.getCurrentServer().getAllLevels()) {
+        for (ServerWorld world : ServerLifecycleHooks.getCurrentServer().getWorlds()) {
 
-            if (world == null || !(world.getLevelData() instanceof ServerWorldInfo)) continue;
-            worldMap.put(((ServerWorldInfo) world.getLevelData()).getLevelName(), world);
+            if (world == null || !(world.getWorldInfo() instanceof ServerWorldInfo)) continue;
+            worldMap.put(((ServerWorldInfo) world.getWorldInfo()).getWorldName(), world);
 
         }
 
@@ -30,21 +30,19 @@ public class WorldMap {
 
         try {
 
-            return ((ServerWorldInfo) player.getLevel().getLevelData()).getLevelName();
+            return ((ServerWorldInfo) player.world.getWorldInfo()).getWorldName();
 
         } catch (ClassCastException er) {
 
             try {
 
-                return ((DerivedWorldInfo) player.getLevel().getLevelData()).getLevelName();
+                return ((DerivedWorldInfo) player.world.getWorldInfo()).getWorldName();
 
             } catch (ClassCastException er2) {
 
                 LypakaUtils.logger.error("Couldn't get world name for player: " + player.getName().getString());
                 LypakaUtils.logger.info("Report this message to Lypaka along with all the following data:");
-                LypakaUtils.logger.info("Player world data: " + player.getLevel().getLevelData());
-                LypakaUtils.logger.info("Player dimension registry key: " + player.level.dimension().getRegistryName().toString());
-                LypakaUtils.logger.info("Player level data storage: " + player.getLevel().getDataStorage().toString());
+                LypakaUtils.logger.info("Player world data: " + player.getServerWorld().getWorldInfo());
 
             }
 
@@ -58,11 +56,11 @@ public class WorldMap {
 
         try {
 
-            return ((ServerWorldInfo) world.getLevelData()).getLevelName();
+            return ((ServerWorldInfo) world.getWorldInfo()).getWorldName();
 
         } catch (ClassCastException er) {
 
-            return ((DerivedWorldInfo) world.getLevelData()).getLevelName();
+            return ((DerivedWorldInfo) world.getWorldInfo()).getWorldName();
 
         }
 

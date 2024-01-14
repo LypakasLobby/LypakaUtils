@@ -18,7 +18,7 @@ public class CommandHandler {
 
             } else {
 
-                player.getServer().getCommands().performCommand(player.getServer().createCommandSourceStack(), c.replace("%player%", player.getName().getString()));
+                player.getServer().getCommandManager().handleCommand(player.getServer().getCommandSource(), c.replace("%player%", player.getName().getString()));
 
             }
 

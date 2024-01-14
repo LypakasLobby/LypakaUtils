@@ -29,30 +29,30 @@ public class JoinListener {
     public static void onJoin (PlayerEvent.PlayerLoggedInEvent event) throws ObjectMappingException {
 
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        playerMap.put(player.getUUID(), player);
-        if (!PlayerDataHandler.playerLocationMap.containsKey(player.getUUID())) {
+        playerMap.put(player.getUniqueID(), player);
+        if (!PlayerDataHandler.playerLocationMap.containsKey(player.getUniqueID())) {
 
-            int x = (int) player.position().x;
-            int z = (int) player.position().z;
+            int x = player.getPosition().getX();
+            int z = player.getPosition().getZ();
             PlayerLocation location = new PlayerLocation(x, z, x, z);
-            PlayerDataHandler.playerLocationMap.put(player.getUUID(), location);
+            PlayerDataHandler.playerLocationMap.put(player.getUniqueID(), location);
 
         }
-        LypakaUtils.playerConfigManager.loadPlayer(player.getUUID());
-        List<String> groups = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Groups").getList(TypeToken.of(String.class));
-        List<String> permissions = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Permissions").getList(TypeToken.of(String.class));
+        LypakaUtils.playerConfigManager.loadPlayer(player.getUniqueID());
+        List<String> groups = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUniqueID(), "Groups").getList(TypeToken.of(String.class));
+        List<String> permissions = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUniqueID(), "Permissions").getList(TypeToken.of(String.class));
 
-        LPPlayer lpPlayer = new LPPlayer(player.getUUID(), groups, permissions);
-        LypakaUtils.playerMap.put(player.getUUID(), lpPlayer);
+        LPPlayer lpPlayer = new LPPlayer(player.getUniqueID(), groups, permissions);
+        LypakaUtils.playerMap.put(player.getUniqueID(), lpPlayer);
 
     }
 
     @SubscribeEvent
     public static void onLeave (PlayerEvent.PlayerLoggedOutEvent event) {
 
-        playerMap.entrySet().removeIf(entry -> entry.getKey().toString().equalsIgnoreCase(event.getPlayer().getUUID().toString()));
+        playerMap.entrySet().removeIf(entry -> entry.getKey().toString().equalsIgnoreCase(event.getPlayer().getUniqueID().toString()));
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        LPPlayer lpPlayer = LypakaUtils.playerMap.get(player.getUUID());
+        LPPlayer lpPlayer = LypakaUtils.playerMap.get(player.getUniqueID());
         lpPlayer.save(true);
 
     }

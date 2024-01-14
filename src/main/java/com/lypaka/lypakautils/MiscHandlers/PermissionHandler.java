@@ -18,7 +18,7 @@ public class PermissionHandler {
     public static boolean hasPermission (ServerPlayerEntity player, String permission) {
 
         if (permission.equalsIgnoreCase("")) return true;
-        LPPlayer lpPlayer = LypakaUtils.playerMap.get(player.getUUID());
+        LPPlayer lpPlayer = LypakaUtils.playerMap.get(player.getUniqueID());
         if (lpPlayer.getPermissions().contains(permission)) return true;
         if (lpPlayer.getPermissions().contains("*")) return true;
         return PermissionAPI.hasPermission(player, permission);

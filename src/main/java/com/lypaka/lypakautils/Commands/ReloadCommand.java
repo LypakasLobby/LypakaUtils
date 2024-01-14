@@ -27,7 +27,7 @@ public class ReloadCommand {
                                                     ServerPlayerEntity player = (ServerPlayerEntity) c.getSource().getEntity();
                                                     if (!PermissionHandler.hasPermission(player, "lypakautils.command.admin")) {
 
-                                                        player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUUID());
+                                                        player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUniqueID());
                                                         return 1;
 
                                                     }
@@ -44,7 +44,7 @@ public class ReloadCommand {
                                                     throw new RuntimeException(e);
 
                                                 }
-                                                c.getSource().sendSuccess(FancyText.getFormattedText("&aSuccessfully reloaded LypakaUtils configuration!"), true);
+                                                c.getSource().sendFeedback(FancyText.getFormattedText("&aSuccessfully reloaded LypakaUtils configuration!"), true);
                                                 return 0;
 
                                             })

@@ -41,7 +41,7 @@ public class PermissionCommand {
                                                                                                     ServerPlayerEntity player = (ServerPlayerEntity) c.getSource().getEntity();
                                                                                                     if (!PermissionHandler.hasPermission(player, "lypakapermissions.command.admin")) {
 
-                                                                                                        player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUUID());
+                                                                                                        player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUniqueID());
                                                                                                         return 0;
 
                                                                                                     }
@@ -51,17 +51,17 @@ public class PermissionCommand {
                                                                                                 ServerPlayerEntity target = EntityArgument.getPlayer(c, "player");
                                                                                                 String permission = StringArgumentType.getString(c, "permission");
                                                                                                 String option = StringArgumentType.getString(c, "option");
-                                                                                                LPPlayer lpPlayer = LypakaUtils.playerMap.get(target.getUUID());
+                                                                                                LPPlayer lpPlayer = LypakaUtils.playerMap.get(target.getUniqueID());
 
                                                                                                 if (option.equalsIgnoreCase("add")) {
 
                                                                                                     lpPlayer.addPermission(permission);
-                                                                                                    c.getSource().sendSuccess(FancyText.getFormattedText("&aSuccessfully added permission: " + permission + " to " + target.getName().getString()), true);
+                                                                                                    c.getSource().sendFeedback(FancyText.getFormattedText("&aSuccessfully added permission: " + permission + " to " + target.getName().getString()), true);
 
                                                                                                 } else {
 
                                                                                                     lpPlayer.removePermission(permission);
-                                                                                                    c.getSource().sendSuccess(FancyText.getFormattedText("&aSuccessfully removed permission: " + permission + " from " + target.getName().getString()), true);
+                                                                                                    c.getSource().sendFeedback(FancyText.getFormattedText("&aSuccessfully removed permission: " + permission + " from " + target.getName().getString()), true);
 
                                                                                                 }
 

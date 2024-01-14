@@ -28,13 +28,13 @@ public class TickListener {
             for (Map.Entry<UUID, ServerPlayerEntity> entry : JoinListener.playerMap.entrySet()) {
 
                 ServerPlayerEntity player = entry.getValue();
-                int currentX = (int) player.position().x;
-                int currentZ = (int) player.position().z;
-                World world = player.getLevel();
-                int steps = PlayerDataHandler.calculateStepsTaken(player.getUUID(), currentX, currentZ);
+                int currentX = player.getPosition().getX();
+                int currentZ = player.getPosition().getZ();
+                World world = player.getEntityWorld();
+                int steps = PlayerDataHandler.calculateStepsTaken(player.getUniqueID(), currentX, currentZ);
                 if (steps > 0) {
 
-                    String blockID = world.getBlockState(player.blockPosition()).getBlock().getRegistryName().toString();
+                    String blockID = world.getBlockState(player.getPosition()).getBlock().getRegistryName().toString();
                     if (blockID.contains("water") || blockID.contains("lava")) {
 
                         PlayerMovementEvent.Swim swimEvent = new PlayerMovementEvent.Swim(player, steps, blockID);
@@ -42,7 +42,7 @@ public class TickListener {
 
                     } else {
 
-                        PlayerDataHandler.setLastKnownLandLocation(player.getUUID(), player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ());
+                        PlayerDataHandler.setLastKnownLandLocation(player.getUniqueID(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
                         PlayerMovementEvent.Land landEvent = new PlayerMovementEvent.Land(player, steps, blockID);
                         MinecraftForge.EVENT_BUS.post(landEvent);
 
