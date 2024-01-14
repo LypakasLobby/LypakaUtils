@@ -72,6 +72,27 @@ public class DatabaseManager {
         return data;
     }
 
+    public Map<String, Object> loadData(String tableName, String[] fields) {
+        Map<String, Object> data = new HashMap<>();
+        String selectQuery = "SELECT " + String.join(", ", fields) + " FROM " + tableName;
+
+        try (Connection connection = mysqlConnectionManager.getDataSource().getConnection();
+             PreparedStatement statement = connection.prepareStatement(selectQuery);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                for (String field : fields) {
+                    Object value = resultSet.getObject(field);
+                    data.put(field, value);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
     public void deleteData(String tableName, String condition) {
         String deleteQuery = "DELETE FROM " + tableName + " WHERE " + condition;
 
