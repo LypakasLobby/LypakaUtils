@@ -1,15 +1,15 @@
 package com.lypaka.lypakautils.Listeners;
 
-import com.google.common.reflect.TypeToken;
 import com.lypaka.lypakautils.LPPlayer;
 import com.lypaka.lypakautils.LypakaUtils;
 import com.lypaka.lypakautils.PlayerLocationData.PlayerDataHandler;
 import com.lypaka.lypakautils.PlayerLocationData.PlayerLocation;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import io.leangen.geantyref.TypeToken;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,27 +23,27 @@ public class JoinListener {
      * Used to store all actively online players
      * I know Forge has a way to do this, but I'm not particularly fond of how it works
      */
-    public static Map<UUID, ServerPlayerEntity> playerMap = new HashMap<>();
+    public static Map<UUID, ServerPlayer> playerMap = new HashMap<>();
 
     @SubscribeEvent
-    public static void onJoin (PlayerEvent.PlayerLoggedInEvent event) throws ObjectMappingException {
+    public static void onJoin (PlayerEvent.PlayerLoggedInEvent event) throws SerializationException {
 
-        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        playerMap.put(player.getUniqueID(), player);
-        if (!PlayerDataHandler.playerLocationMap.containsKey(player.getUniqueID())) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        playerMap.put(player.getUUID(), player);
+        if (!PlayerDataHandler.playerLocationMap.containsKey(player.getUUID())) {
 
-            int x = player.getPosition().getX();
-            int z = player.getPosition().getZ();
+            int x = player.getBlockX();
+            int z = player.getBlockZ();
             PlayerLocation location = new PlayerLocation(x, z, x, z);
-            PlayerDataHandler.playerLocationMap.put(player.getUniqueID(), location);
+            PlayerDataHandler.playerLocationMap.put(player.getUUID(), location);
 
         }
-        LypakaUtils.playerConfigManager.loadPlayer(player.getUniqueID());
-        List<String> groups = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUniqueID(), "Groups").getList(TypeToken.of(String.class));
-        List<String> permissions = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUniqueID(), "Permissions").getList(TypeToken.of(String.class));
+        LypakaUtils.playerConfigManager.loadPlayer(player.getUUID());
+        List<String> groups = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Groups").getList(TypeToken.get(String.class));
+        List<String> permissions = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Permissions").getList(TypeToken.get(String.class));
 
-        LPPlayer lpPlayer = new LPPlayer(player.getUniqueID(), groups, permissions);
-        LypakaUtils.playerMap.put(player.getUniqueID(), lpPlayer);
+        LPPlayer lpPlayer = new LPPlayer(player.getUUID(), groups, permissions);
+        LypakaUtils.playerMap.put(player.getUUID(), lpPlayer);
 
     }
 
@@ -52,8 +52,8 @@ public class JoinListener {
 
         try {
 
-            ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-            LPPlayer lpPlayer = LypakaUtils.playerMap.get(player.getUniqueID());
+            ServerPlayer player = (ServerPlayer) event.getEntity();
+            LPPlayer lpPlayer = LypakaUtils.playerMap.get(player.getUUID());
             lpPlayer.save(true);
 
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class JoinListener {
 
         }
 
-        playerMap.entrySet().removeIf(entry -> entry.getKey().toString().equalsIgnoreCase(event.getPlayer().getUniqueID().toString()));
+        playerMap.entrySet().removeIf(entry -> entry.getKey().toString().equalsIgnoreCase(event.getEntity().getUUID().toString()));
 
     }
 

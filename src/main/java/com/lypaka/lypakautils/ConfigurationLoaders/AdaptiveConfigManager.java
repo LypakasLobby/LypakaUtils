@@ -1,9 +1,9 @@
 package com.lypaka.lypakautils.ConfigurationLoaders;
 
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class AdaptiveConfigManager {
 
         }
 
-        HoconConfigurationLoader.builder().setPath(this.configPath).setFile(new File(this.fileName)).build();
+        HoconConfigurationLoader.builder().path(this.configPath).file(new File(this.fileName)).build();
         config[0] = this.configPath.resolve(this.fileName);
 
         load();
@@ -79,8 +79,8 @@ public class AdaptiveConfigManager {
 
         try {
 
-            configLoad.add(0, HoconConfigurationLoader.builder().setPath(config[0]).build());
-            configNode[0] = HoconConfigurationLoader.builder().setPath(config[0]).build().load();
+            configLoad.add(0, HoconConfigurationLoader.builder().path(config[0]).build());
+            configNode[0] = HoconConfigurationLoader.builder().path(config[0]).build().load();
 
         } catch (IOException e) {
 
@@ -107,7 +107,7 @@ public class AdaptiveConfigManager {
 
     public CommentedConfigurationNode getConfigNode (Object... node) {
 
-        return configNode[0].getNode(node);
+        return configNode[0].node(node);
 
     }
 

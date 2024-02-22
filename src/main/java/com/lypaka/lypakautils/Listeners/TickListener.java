@@ -3,8 +3,9 @@ package com.lypaka.lypakautils.Listeners;
 import com.lypaka.lypakautils.API.PlayerMovementEvent;
 import com.lypaka.lypakautils.ConfigGetters;
 import com.lypaka.lypakautils.PlayerLocationData.PlayerDataHandler;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,16 +26,16 @@ public class TickListener {
         if (count >= 20) {
 
             count = -1;
-            for (Map.Entry<UUID, ServerPlayerEntity> entry : JoinListener.playerMap.entrySet()) {
+            for (Map.Entry<UUID, ServerPlayer> entry : JoinListener.playerMap.entrySet()) {
 
-                ServerPlayerEntity player = entry.getValue();
-                int currentX = player.getPosition().getX();
-                int currentZ = player.getPosition().getZ();
-                World world = player.getEntityWorld();
-                int steps = PlayerDataHandler.calculateStepsTaken(player.getUniqueID(), currentX, currentZ);
+                ServerPlayer player = entry.getValue();
+                int currentX = player.getBlockX();
+                int currentZ = player.getBlockZ();
+                ServerLevel world = player.serverLevel();
+                int steps = PlayerDataHandler.calculateStepsTaken(player.getUUID(), currentX, currentZ);
                 if (steps > 0) {
 
-                    String blockID = world.getBlockState(player.getPosition()).getBlock().getRegistryName().toString();
+                    String blockID = BuiltInRegistries.BLOCK.getKey(world.getBlockState(player.getOnPos()).getBlock()).toString();
                     if (blockID.contains("water") || blockID.contains("lava")) {
 
                         PlayerMovementEvent.Swim swimEvent = new PlayerMovementEvent.Swim(player, steps, blockID);
@@ -42,7 +43,7 @@ public class TickListener {
 
                     } else {
 
-                        PlayerDataHandler.setLastKnownLandLocation(player.getUniqueID(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+                        PlayerDataHandler.setLastKnownLandLocation(player.getUUID(), player.getBlockX(), player.getBlockY(), player.getBlockZ());
                         PlayerMovementEvent.Land landEvent = new PlayerMovementEvent.Land(player, steps, blockID);
                         MinecraftForge.EVENT_BUS.post(landEvent);
 

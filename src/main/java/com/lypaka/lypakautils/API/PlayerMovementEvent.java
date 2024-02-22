@@ -1,14 +1,14 @@
 package com.lypaka.lypakautils.API;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.Event;
 
 public abstract class PlayerMovementEvent extends Event {
 
-    private final ServerPlayerEntity player;
+    private final ServerPlayer player;
     private final int stepsTaken;
 
-    public PlayerMovementEvent (ServerPlayerEntity player, int stepsTaken) {
+    public PlayerMovementEvent (ServerPlayer player, int stepsTaken) {
 
         this.player = player;
         this.stepsTaken = stepsTaken;
@@ -19,7 +19,7 @@ public abstract class PlayerMovementEvent extends Event {
 
         private final String blockID;
 
-        public Land (ServerPlayerEntity player, int stepsTaken, String blockID) {
+        public Land (ServerPlayer player, int stepsTaken, String blockID) {
 
             super(player, stepsTaken);
             this.blockID = blockID;
@@ -38,7 +38,7 @@ public abstract class PlayerMovementEvent extends Event {
 
         private final String blockID;
 
-        public Swim (ServerPlayerEntity player, int stepsTaken, String blockID) {
+        public Swim (ServerPlayer player, int stepsTaken, String blockID) {
 
             super(player, stepsTaken);
             this.blockID = blockID;
@@ -53,7 +53,7 @@ public abstract class PlayerMovementEvent extends Event {
 
     }
 
-    public ServerPlayerEntity getPlayer() {
+    public ServerPlayer getPlayer() {
 
         return this.player;
 

@@ -1,11 +1,6 @@
 package com.lypaka.lypakautils;
 
-import net.minecraft.util.text.Color;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-
-import java.awt.*;
-import java.util.ArrayList;
+import net.minecraft.network.chat.Component;
 
 public class FancyText {
 
@@ -27,9 +22,9 @@ public class FancyText {
      * @param unformattedText
      * @return
      */
-    public static StringTextComponent getFormattedText (String unformattedText) {
+    public static Component getFormattedText (String unformattedText) {
 
-        return new StringTextComponent(getFormattedString(unformattedText));
+        return Component.literal(getFormattedString(unformattedText));
 
     }
 

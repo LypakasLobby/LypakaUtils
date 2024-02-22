@@ -1,52 +1,51 @@
 package com.lypaka.lypakautils.MiscHandlers;
 
 import com.lypaka.lypakautils.WorldStuff.WorldMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.DimensionType;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 
 public class WorldHelpers {
 
-    public static boolean isPlayerInUltraSpace (ServerPlayerEntity player) {
+    public static boolean isPlayerInUltraSpace (ServerPlayer player) {
 
-        return player.world.getDimensionKey().getLocation().toString().equalsIgnoreCase("pixelmon:ultra_space");
-
-    }
-
-    public static boolean isPlayerInDrownedWorldForSomeUngodlyReason (ServerPlayerEntity player) {
-
-        return player.world.getDimensionKey().getLocation().toString().equalsIgnoreCase("pixelmon:drowned_world");
+        return player.serverLevel().dimension().registry().toString().equalsIgnoreCase("pixelmon:ultra_space");
 
     }
 
-    public static boolean isPlayerInOverworld (ServerPlayerEntity player) {
+    public static boolean isPlayerInDrownedWorldForSomeUngodlyReason (ServerPlayer player) {
 
-        return player.world.getDimensionKey().getLocation().toString().equalsIgnoreCase("minecraft:overworld");
-
-    }
-
-    public static boolean isPlayerInNether (ServerPlayerEntity player) {
-
-        return player.world.getDimensionKey().getLocation().toString().equalsIgnoreCase("minecraft:nether");
+        return player.serverLevel().dimension().registry().toString().equalsIgnoreCase("pixelmon:drowned_world");
 
     }
 
-    public static boolean isPlayerInEnd (ServerPlayerEntity player) {
+    public static boolean isPlayerInOverworld (ServerPlayer player) {
 
-        return player.world.getDimensionKey().getLocation().toString().equalsIgnoreCase("minecraft:the_end") ||
-                player.world.getDimensionKey().getLocation().toString().equalsIgnoreCase("minecraft:end"); // not sure what Minecraft calls that, lol
+        return player.serverLevel().dimension().registry().toString().equalsIgnoreCase("minecraft:overworld");
+
+    }
+
+    public static boolean isPlayerInNether (ServerPlayer player) {
+
+        return player.serverLevel().dimension().registry().toString().equalsIgnoreCase("minecraft:nether");
+
+    }
+
+    public static boolean isPlayerInEnd (ServerPlayer player) {
+
+        return player.serverLevel().dimension().registry().toString().equalsIgnoreCase("minecraft:the_end") ||
+                player.serverLevel().dimension().registry().toString().equalsIgnoreCase("minecraft:end"); // not sure what Minecraft calls that, lol
 
     }
 
     public static String getEntityDimensionID (Entity entity) {
 
-        return entity.world.getDimensionKey().getLocation().toString();
+        return entity.level().dimension().location().toString();
 
     }
 
-    public static void teleportPlayer (ServerPlayerEntity player, String world, int x, int y, int z, float yaw, float pitch) {
+    public static void teleportPlayer (ServerPlayer player, String world, int x, int y, int z, float yaw, float pitch) {
 
-        player.teleport(WorldMap.worldMap.get(world), x, y, z, yaw, pitch);
+        player.teleportTo(WorldMap.worldMap.get(world), x, y, z, yaw, pitch);
 
     }
 

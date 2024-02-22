@@ -1,17 +1,17 @@
 package com.lypaka.lypakautils.API;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
 @Cancelable
 public class PermissionQueueEvent extends Event {
 
-    private final ServerPlayerEntity player;
+    private final ServerPlayer player;
     private final String permission;
     private boolean bypass;
 
-    public PermissionQueueEvent (ServerPlayerEntity player, String permission, boolean bypass) {
+    public PermissionQueueEvent (ServerPlayer player, String permission, boolean bypass) {
 
         this.player = player;
         this.permission = permission;
@@ -19,7 +19,7 @@ public class PermissionQueueEvent extends Event {
 
     }
 
-    public ServerPlayerEntity getPlayer() {
+    public ServerPlayer getPlayer() {
 
         return this.player;
 

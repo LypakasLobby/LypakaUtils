@@ -1,57 +1,29 @@
 package com.lypaka.lypakautils.MiscHandlers;
 
-import com.lypaka.lypakautils.LypakaUtils;
-import com.pixelmonmod.pixelmon.api.economy.BankAccount;
 import com.pixelmonmod.pixelmon.api.economy.BankAccountProxy;
 
-import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public class LogicalPixelmonMoneyHandler {
 
-    public static void add (UUID uuid, double amount) {
+    public static void add (UUID uuid, double amount) throws ExecutionException, InterruptedException {
 
-        Optional<? extends BankAccount> account = BankAccountProxy.getBankAccount(uuid);
-        if (account.isPresent()) {
-
-            account.get().add(amount);
-            account.get().updatePlayer(); // putting this here for safety I guess
-
-        } else {
-
-            LypakaUtils.logger.error("Could not get account for UUID: " + uuid + "!");
-
-        }
+        BankAccountProxy.getBankAccount(uuid).get().add(amount);
+        BankAccountProxy.getBankAccount(uuid).get().updatePlayer();
 
     }
 
-    public static void remove (UUID uuid, double amount) {
+    public static void remove (UUID uuid, double amount) throws ExecutionException, InterruptedException {
 
-        Optional<? extends BankAccount> account = BankAccountProxy.getBankAccount(uuid);
-        if (account.isPresent()) {
-
-            account.get().take(amount);
-            account.get().updatePlayer(); // putting this here for safety I guess
-
-        } else {
-
-            LypakaUtils.logger.error("Could not get account for UUID: " + uuid + "!");
-
-        }
+        BankAccountProxy.getBankAccount(uuid).get().take(amount);
+        BankAccountProxy.getBankAccount(uuid).get().updatePlayer();
 
     }
 
-    public static double getBalance (UUID uuid) {
+    public static double getBalance (UUID uuid) throws ExecutionException, InterruptedException {
 
-        double balance = 0;
-        Optional<? extends BankAccount> account = BankAccountProxy.getBankAccount(uuid);
-        if (account.isPresent()) {
-
-            balance = account.get().getBalance().doubleValue();
-
-        }
-
-        return balance;
+        return BankAccountProxy.getBankAccount(uuid).get().getBalance().doubleValue();
 
     }
 

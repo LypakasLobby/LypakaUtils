@@ -3,23 +3,18 @@ package com.lypaka.lypakautils.Commands;
 import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.LPPlayer;
 import com.lypaka.lypakautils.LypakaUtils;
+import com.lypaka.lypakautils.MiscHandlers.MessageHandler;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.command.arguments.EntityArgument;
-import net.minecraft.entity.player.ServerPlayerEntity;
-
-import java.util.Arrays;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.server.level.ServerPlayer;
 
 public class PermissionCommand {
 
-    private static SuggestionProvider<CommandSource> OPTIONS = (context, builder) -> ISuggestionProvider.suggest(Arrays.asList("add", "remove"), builder);
-
-    public PermissionCommand (CommandDispatcher<CommandSource> dispatcher) {
+    public PermissionCommand (CommandDispatcher<CommandSourceStack> dispatcher) {
 
         for (String a : LypakaUtilsCommand.ALIASES) {
 
@@ -28,48 +23,71 @@ public class PermissionCommand {
                             .then(
                                     Commands.literal("permission")
                                             .then(
-                                                    Commands.argument("option", StringArgumentType.string())
-                                                            .suggests(OPTIONS)
+                                                    Commands.literal("add")
                                                             .then(
                                                                     Commands.argument("player", EntityArgument.player())
                                                                             .then(
                                                                                     Commands.argument("permission", StringArgumentType.string())
                                                                                             .executes(c -> {
 
-                                                                                                if (c.getSource().getEntity() instanceof ServerPlayerEntity) {
+                                                                                                if (c.getSource().getEntity() instanceof ServerPlayer) {
 
-                                                                                                    ServerPlayerEntity player = (ServerPlayerEntity) c.getSource().getEntity();
-                                                                                                    if (!PermissionHandler.hasPermission(player, "lypakapermissions.command.admin")) {
+                                                                                                    ServerPlayer player = (ServerPlayer) c.getSource().getEntity();
+                                                                                                    if (!PermissionHandler.hasPermission(player, "lypakautils", "lypakapermissions.command.admin")) {
 
-                                                                                                        player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUniqueID());
+                                                                                                        MessageHandler.sendMessage(player, "&cYou don't have permission to use this command!");
                                                                                                         return 0;
 
                                                                                                     }
 
                                                                                                 }
 
-                                                                                                ServerPlayerEntity target = EntityArgument.getPlayer(c, "player");
+                                                                                                ServerPlayer target = EntityArgument.getPlayer(c, "player");
                                                                                                 String permission = StringArgumentType.getString(c, "permission");
-                                                                                                String option = StringArgumentType.getString(c, "option");
-                                                                                                LPPlayer lpPlayer = LypakaUtils.playerMap.get(target.getUniqueID());
-
-                                                                                                if (option.equalsIgnoreCase("add")) {
-
-                                                                                                    lpPlayer.addPermission(permission);
-                                                                                                    c.getSource().sendFeedback(FancyText.getFormattedText("&aSuccessfully added permission: " + permission + " to " + target.getName().getString()), true);
-
-                                                                                                } else {
-
-                                                                                                    lpPlayer.removePermission(permission);
-                                                                                                    c.getSource().sendFeedback(FancyText.getFormattedText("&aSuccessfully removed permission: " + permission + " from " + target.getName().getString()), true);
-
-                                                                                                }
+                                                                                                LPPlayer lpPlayer = LypakaUtils.playerMap.get(target.getUUID());
+                                                                                                lpPlayer.addPermission(permission);
+                                                                                                MessageHandler.sendMessage(c.getSource(), FancyText.getFormattedString("&aSuccessfully added permission: " + permission + " to " + target.getName().getString()));
 
                                                                                                 return 1;
 
                                                                                             })
                                                                             )
                                                             )
+
+                                            )
+                                            .then(
+                                                    Commands.literal("remove")
+                                                            .then(
+                                                                    Commands.argument("player", EntityArgument.player())
+                                                                            .then(
+                                                                                    Commands.argument("permission", StringArgumentType.string())
+                                                                                            .executes(c -> {
+
+                                                                                                if (c.getSource().getEntity() instanceof ServerPlayer) {
+
+                                                                                                    ServerPlayer player = (ServerPlayer) c.getSource().getEntity();
+                                                                                                    if (!PermissionHandler.hasPermission(player, "lypakautils", "lypakapermissions.command.admin")) {
+
+                                                                                                        MessageHandler.sendMessage(player, "&cYou don't have permission to use this command!");
+                                                                                                        return 0;
+
+                                                                                                    }
+
+                                                                                                }
+
+                                                                                                ServerPlayer target = EntityArgument.getPlayer(c, "player");
+                                                                                                String permission = StringArgumentType.getString(c, "permission");
+                                                                                                LPPlayer lpPlayer = LypakaUtils.playerMap.get(target.getUUID());
+
+                                                                                                lpPlayer.removePermission(permission);
+                                                                                                MessageHandler.sendMessage(c.getSource(), FancyText.getFormattedString("&aSuccessfully removed permission: " + permission + " from " + target.getName().getString()));
+
+                                                                                                return 1;
+
+                                                                                            })
+                                                                            )
+                                                            )
+
                                             )
                             )
             );

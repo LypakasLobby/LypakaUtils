@@ -6,9 +6,8 @@ import com.lypaka.lypakautils.ConfigurationLoaders.PlayerConfigManager;
 import com.lypaka.lypakautils.Listeners.TickListener;
 import com.lypaka.lypakautils.WorldStuff.WorldMap;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,12 +28,12 @@ public class LypakaUtils {
     public static PlayerConfigManager playerConfigManager;
     public static Map<UUID, LPPlayer> playerMap = new HashMap<>();
 
-    public LypakaUtils() throws IOException, ObjectMappingException {
+    public LypakaUtils() throws IOException {
 
         logger.info("Loading LypakaUtils");
         MinecraftForge.EVENT_BUS.register(this);
         Path dir = ConfigUtils.checkDir(Paths.get("./config/lypakautils"));
-        String[] files = new String[]{"lypakautils.conf", "permission-groups.conf", "command-executors.conf"};
+        String[] files = new String[]{"lypakautils.conf", "permission-groups.conf"};
         configManager = new BasicConfigManager(files, dir, LypakaUtils.class, MOD_NAME, MOD_ID, logger);
         configManager.init();
         playerConfigManager = new PlayerConfigManager("account.conf", "accounts", dir, LypakaUtils.class, MOD_NAME, MOD_ID, logger);
@@ -44,7 +43,7 @@ public class LypakaUtils {
 
     }
 
-    public static void onServerStarted (FMLServerStartingEvent event) {
+    public static void onServerStarted (ServerStartedEvent event) {
 
         WorldMap.load();
         if (ConfigGetters.tickListenerEnabled) {

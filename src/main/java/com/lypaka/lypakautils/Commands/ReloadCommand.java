@@ -3,16 +3,17 @@ package com.lypaka.lypakautils.Commands;
 import com.lypaka.lypakautils.ConfigGetters;
 import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.LypakaUtils;
+import com.lypaka.lypakautils.MiscHandlers.MessageHandler;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.server.level.ServerPlayer;
+import org.spongepowered.configurate.serialize.SerializationException;
 
 public class ReloadCommand {
 
-    public ReloadCommand (CommandDispatcher<CommandSource> dispatcher) {
+    public ReloadCommand (CommandDispatcher<CommandSourceStack> dispatcher) {
 
         for (String a : LypakaUtilsCommand.ALIASES) {
 
@@ -22,12 +23,12 @@ public class ReloadCommand {
                                     Commands.literal("reload")
                                             .executes(c -> {
 
-                                                if (c.getSource().getEntity() instanceof ServerPlayerEntity) {
+                                                if (c.getSource().getEntity() instanceof ServerPlayer) {
 
-                                                    ServerPlayerEntity player = (ServerPlayerEntity) c.getSource().getEntity();
-                                                    if (!PermissionHandler.hasPermission(player, "lypakautils.command.admin")) {
+                                                    ServerPlayer player = (ServerPlayer) c.getSource().getEntity();
+                                                    if (!PermissionHandler.hasPermission(player, "lypakautils", "lypakautils.command.admin")) {
 
-                                                        player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUniqueID());
+                                                        MessageHandler.sendMessage(player, "&cYou don't have permission to use this command!");
                                                         return 1;
 
                                                     }
@@ -39,12 +40,12 @@ public class ReloadCommand {
                                                     LypakaUtils.configManager.load();
                                                     ConfigGetters.load();
 
-                                                } catch (ObjectMappingException e) {
+                                                } catch (SerializationException e) {
 
                                                     throw new RuntimeException(e);
 
                                                 }
-                                                c.getSource().sendFeedback(FancyText.getFormattedText("&aSuccessfully reloaded LypakaUtils configuration!"), true);
+                                                MessageHandler.sendMessage(c.getSource(), FancyText.getFormattedString("&aSuccessfully reloaded LypakaUtils configuration!"));
                                                 return 0;
 
                                             })

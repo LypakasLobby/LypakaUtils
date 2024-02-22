@@ -1,36 +1,34 @@
 package com.lypaka.lypakautils.WorldStuff;
 
-import com.lypaka.lypakautils.LypakaUtils;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.DerivedWorldInfo;
-import net.minecraft.world.storage.ServerWorldInfo;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class WorldMap {
 
-    public static Map<String, ServerWorld> worldMap = new HashMap<>();
+    public static Map<String, ServerLevel> worldMap = new HashMap<>();
 
     public static void load() {
 
-        for (ServerWorld world : ServerLifecycleHooks.getCurrentServer().getWorlds()) {
+        for (ServerLevel world : ServerLifecycleHooks.getCurrentServer().getAllLevels()) {
 
-            if (world == null || !(world.getWorldInfo() instanceof ServerWorldInfo)) continue;
-            worldMap.put(((ServerWorldInfo) world.getWorldInfo()).getWorldName(), world);
+            if (world == null) continue;
+            worldMap.put(((ServerLevelData) world.getLevel().getLevelData()).getLevelName(), world);
 
         }
 
     }
 
-    public static String getWorldName (ServerPlayerEntity player) {
+    public static String getWorldName (ServerPlayer player) {
 
-        try {
+        /*try {
 
-            return ((ServerWorldInfo) player.world.getWorldInfo()).getWorldName();
+            return ((ServerLevelData) player.level().getLevelData()).getLevelName();
 
         } catch (ClassCastException er) {
 
@@ -46,15 +44,16 @@ public class WorldMap {
 
             }
 
-        }
+        }*/
+        return ((ServerLevelData) player.level().getLevelData()).getLevelName();
 
-        return "";
+        //return "";
 
     }
 
-    public static String getWorldName (World world) {
+    public static String getWorldName (Level world) {
 
-        try {
+        /*try {
 
             return ((ServerWorldInfo) world.getWorldInfo()).getWorldName();
 
@@ -62,7 +61,8 @@ public class WorldMap {
 
             return ((DerivedWorldInfo) world.getWorldInfo()).getWorldName();
 
-        }
+        }*/
+        return ((ServerLevelData) world.getLevelData()).getLevelName();
 
     }
 

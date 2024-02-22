@@ -1,9 +1,9 @@
 package com.lypaka.lypakautils.ConfigurationLoaders;
 
 import org.apache.logging.log4j.Logger;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class BasicConfigManager {
 
             }
 
-            HoconConfigurationLoader.builder().setPath(this.configPath).setFile(new File(this.fileNames[i])).build();
+            HoconConfigurationLoader.builder().path(this.configPath).file(new File(this.fileNames[i])).build();
             config[i] = this.configPath.resolve(this.fileNames[i]);
 
         }
@@ -81,8 +81,8 @@ public class BasicConfigManager {
 
             for (int i = 0; i < this.fileNames.length; i++) {
 
-                configLoad.add(i, HoconConfigurationLoader.builder().setPath(config[i]).build());
-                configNode[i] = HoconConfigurationLoader.builder().setPath(config[i]).build().load();
+                configLoad.add(i, HoconConfigurationLoader.builder().path(config[i]).build());
+                configNode[i] = HoconConfigurationLoader.builder().path(config[i]).build().load();
 
             }
 
@@ -115,7 +115,7 @@ public class BasicConfigManager {
 
     public CommentedConfigurationNode getConfigNode (int index, Object... node) {
 
-        return configNode[index].getNode(node);
+        return configNode[index].node(node);
 
     }
 

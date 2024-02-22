@@ -1,7 +1,7 @@
 package com.lypaka.lypakautils.Listeners;
 
 import com.lypaka.lypakautils.LypakaUtils;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,14 +17,14 @@ public class DeathListener {
     @SubscribeEvent
     public static void onRespawn (PlayerEvent.PlayerRespawnEvent event) {
 
-        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        ServerPlayer player = (ServerPlayer) event.getEntity();
         putTheBitchBackIfMissing(player);
 
     }
 
-    private static void putTheBitchBackIfMissing (ServerPlayerEntity player) {
+    private static void putTheBitchBackIfMissing (ServerPlayer player) {
 
-        UUID uuid = player.getUniqueID();
+        UUID uuid = player.getUUID();
         JoinListener.playerMap.entrySet().removeIf(entry -> entry.getKey().toString().equalsIgnoreCase(uuid.toString()));
         JoinListener.playerMap.put(uuid, player);
 
