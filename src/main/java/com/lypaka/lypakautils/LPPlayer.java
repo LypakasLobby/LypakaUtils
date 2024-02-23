@@ -1,6 +1,6 @@
 package com.lypaka.lypakautils;
 
-import org.spongepowered.configurate.serialize.SerializationException;
+//import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.util.List;
 import java.util.UUID;
@@ -73,10 +73,10 @@ public class LPPlayer {
 
     }
 
-    public void save (boolean remove) throws SerializationException {
+    public void save (boolean remove) /*throws SerializationException*/ {
 
-        LypakaUtils.playerConfigManager.getPlayerConfigNode(this.uuid, "Groups").set(this.groups);
-        LypakaUtils.playerConfigManager.getPlayerConfigNode(this.uuid, "Permissions").set(this.permissions);
+        LypakaUtils.playerConfigManager.getPlayerConfigNode(this.uuid, "Groups").setValue(this.groups);
+        LypakaUtils.playerConfigManager.getPlayerConfigNode(this.uuid, "Permissions").setValue(this.permissions);
         LypakaUtils.playerConfigManager.savePlayer(this.uuid);
 
         if (remove) {

@@ -9,7 +9,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
-import org.spongepowered.configurate.serialize.SerializationException;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+//import org.spongepowered.configurate.serialize.SerializationException;
 
 public class ReloadCommand {
 
@@ -40,7 +41,7 @@ public class ReloadCommand {
                                                     LypakaUtils.configManager.load();
                                                     ConfigGetters.load();
 
-                                                } catch (SerializationException e) {
+                                                } catch (/*SerializationException*/ ObjectMappingException e) {
 
                                                     throw new RuntimeException(e);
 

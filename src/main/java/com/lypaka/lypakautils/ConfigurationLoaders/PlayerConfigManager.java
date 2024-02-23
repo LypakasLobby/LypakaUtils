@@ -1,9 +1,12 @@
 package com.lypaka.lypakautils.ConfigurationLoaders;
 
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+//import org.spongepowered.configurate.CommentedConfigurationNode;
+//import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+//import org.spongepowered.configurate.loader.ConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -94,7 +97,7 @@ public class PlayerConfigManager {
                 loadMap = ConfigUtils.playerConfigLoad.get(this.modID);
 
             }
-            loadMap.put(uuid, HoconConfigurationLoader.builder().path(ConfigUtils.playerConfig.get(this.modID).get(uuid)).build());
+            loadMap.put(uuid, HoconConfigurationLoader.builder().setPath(ConfigUtils.playerConfig.get(this.modID).get(uuid)).build());
             ConfigUtils.playerConfigLoad.put(this.modID, loadMap);
             Map<UUID, CommentedConfigurationNode> nodeMap = new HashMap<>();
             if (ConfigUtils.playerConfigNode.containsKey(this.modID)) {
@@ -102,7 +105,7 @@ public class PlayerConfigManager {
                 nodeMap = ConfigUtils.playerConfigNode.get(this.modID);
 
             }
-            nodeMap.put(uuid, HoconConfigurationLoader.builder().path(ConfigUtils.playerConfig.get(this.modID).get(uuid)).build().load());
+            nodeMap.put(uuid, HoconConfigurationLoader.builder().setPath(ConfigUtils.playerConfig.get(this.modID).get(uuid)).build().load());
             ConfigUtils.playerConfigNode.put(this.modID, nodeMap);
 
         } catch (IOException er) {
@@ -130,7 +133,7 @@ public class PlayerConfigManager {
     public CommentedConfigurationNode getPlayerConfigNode (UUID uuid, Object... node) {
 
 
-        return ConfigUtils.playerConfigNode.get(this.modID).get(uuid).node(node);
+        return ConfigUtils.playerConfigNode.get(this.modID).get(uuid).getNode(node);
 
     }
 

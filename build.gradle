@@ -133,13 +133,15 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:1.20.2-48.1.0"
     compileOnly fileTree(dir: 'C:\\Users\\ryan9\\Documents\\GitHub\\LIBRARIES', include: ['Reforged-1.20.jar'])
-    shadow group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
-    shadow group: 'org.spongepowered', name: 'configurate-core', version: '4.1.2'
+    //shadow group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
+    //shadow group: 'org.spongepowered', name: 'configurate-core', version: '4.1.2'
+    shadow group: 'ninja.leaping.configurate', name: 'configurate-hocon', version: '3.7.1'
+    shadow group: 'ninja.leaping.configurate', name: 'configurate-core', version: '3.7.1'
     implementation 'com.zaxxer:HikariCP:4.0.3'
-    implementation group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
-    implementation group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
-    //include 'org.spongepowered:configurate-hocon:4.1.2'
-    //include 'org.spongepowered:configurate-core:4.1.2'
+    //implementation group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
+    //implementation group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
+    implementation group: 'ninja.leaping.configurate', name: 'configurate-hocon', version: '3.7.1'
+    implementation group: 'ninja.leaping.configurate', name: 'configurate-core', version: '3.7.1'
 }
 
 jar {
@@ -161,10 +163,12 @@ shadowJar {
     configurations = [project.configurations.shadow]
     archivesBaseName = 'LypakaUtils'
 
-    relocate 'org.spongepowered.configurate', 'info.lypakautils.repack.org.spongepowered'
     relocate 'com.typesafe.config', 'info.lypakautils.repack.com.typesafe'
     relocate 'ninja.leaping.configurate', "info.lypakautils.repack.ninja.leaping.configurate"
     relocate 'io.leangen.genryfef', 'info.lypakautils.repack.leangen'
+    relocate 'com.google', 'info.lypakautils.com.google'
+    relocate 'javax.inject', 'info.lypakautils.javax.inject'
+    // com.google.base.internal
     exclude "**/module-info.class"
 }
 

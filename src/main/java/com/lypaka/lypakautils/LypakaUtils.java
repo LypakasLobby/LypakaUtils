@@ -8,6 +8,7 @@ import com.lypaka.lypakautils.WorldStuff.WorldMap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.fml.common.Mod;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +29,7 @@ public class LypakaUtils {
     public static PlayerConfigManager playerConfigManager;
     public static Map<UUID, LPPlayer> playerMap = new HashMap<>();
 
-    public LypakaUtils() throws IOException {
+    public LypakaUtils() throws IOException, ObjectMappingException {
 
         logger.info("Loading LypakaUtils");
         MinecraftForge.EVENT_BUS.register(this);

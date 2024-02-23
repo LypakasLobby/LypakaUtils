@@ -1,15 +1,17 @@
 package com.lypaka.lypakautils.Listeners;
 
+import com.google.common.reflect.TypeToken;
 import com.lypaka.lypakautils.LPPlayer;
 import com.lypaka.lypakautils.LypakaUtils;
 import com.lypaka.lypakautils.PlayerLocationData.PlayerDataHandler;
 import com.lypaka.lypakautils.PlayerLocationData.PlayerLocation;
-import io.leangen.geantyref.TypeToken;
+//import io.leangen.geantyref.TypeToken;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.spongepowered.configurate.serialize.SerializationException;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+//import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +28,7 @@ public class JoinListener {
     public static Map<UUID, ServerPlayer> playerMap = new HashMap<>();
 
     @SubscribeEvent
-    public static void onJoin (PlayerEvent.PlayerLoggedInEvent event) throws SerializationException {
+    public static void onJoin (PlayerEvent.PlayerLoggedInEvent event) throws ObjectMappingException /*throws SerializationException*/ {
 
         ServerPlayer player = (ServerPlayer) event.getEntity();
         playerMap.put(player.getUUID(), player);
@@ -39,8 +41,8 @@ public class JoinListener {
 
         }
         LypakaUtils.playerConfigManager.loadPlayer(player.getUUID());
-        List<String> groups = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Groups").getList(TypeToken.get(String.class));
-        List<String> permissions = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Permissions").getList(TypeToken.get(String.class));
+        List<String> groups = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Groups").getList(TypeToken.of(String.class));
+        List<String> permissions = LypakaUtils.playerConfigManager.getPlayerConfigNode(player.getUUID(), "Permissions").getList(TypeToken.of(String.class));
 
         LPPlayer lpPlayer = new LPPlayer(player.getUUID(), groups, permissions);
         LypakaUtils.playerMap.put(player.getUUID(), lpPlayer);

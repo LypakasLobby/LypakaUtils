@@ -1,7 +1,9 @@
 package com.lypaka.lypakautils.ConfigurationLoaders;
 
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+//import org.spongepowered.configurate.CommentedConfigurationNode;
+//import org.spongepowered.configurate.loader.ConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.file.Files;
