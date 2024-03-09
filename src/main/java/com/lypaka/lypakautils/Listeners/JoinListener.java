@@ -3,8 +3,10 @@ package com.lypaka.lypakautils.Listeners;
 import com.google.common.reflect.TypeToken;
 import com.lypaka.lypakautils.LPPlayer;
 import com.lypaka.lypakautils.LypakaUtils;
+import com.lypaka.lypakautils.MiscHandlers.WorldHelpers;
 import com.lypaka.lypakautils.PlayerLocationData.PlayerDataHandler;
 import com.lypaka.lypakautils.PlayerLocationData.PlayerLocation;
+import com.lypaka.lypakautils.WorldStuff.WorldMap;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,7 +36,9 @@ public class JoinListener {
 
             int x = player.getPosition().getX();
             int z = player.getPosition().getZ();
-            PlayerLocation location = new PlayerLocation(x, z, x, z);
+            String dimension = WorldHelpers.getEntityDimensionID(player);
+            String world = WorldMap.getWorldName(player);
+            PlayerLocation location = new PlayerLocation(x, z, x, z, dimension, dimension, world, world);
             PlayerDataHandler.playerLocationMap.put(player.getUniqueID(), location);
 
         }

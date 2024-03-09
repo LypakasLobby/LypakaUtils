@@ -1,9 +1,9 @@
 package com.lypaka.lypakautils.ConfigurationLoaders;
 
-import org.apache.logging.log4j.Logger;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,27 +45,37 @@ public class BasicConfigManager {
 
     }
 
-    public void init() throws IOException {
+    public void init() {
 
+        String currentFile = "";
         for (int i = 0; i < this.fileNames.length; i++) {
 
-            this.config[i] = this.configPath.resolve(this.fileNames[i]);
-            Path filePathString = Paths.get(this.configPath + "//" + this.fileNames[i]);
-            if (!this.config[i].toFile().exists()) {
+            currentFile = this.fileNames[i];
+            try {
 
-                try {
+                this.config[i] = this.configPath.resolve(this.fileNames[i]);
+                Path filePathString = Paths.get(this.configPath + "//" + this.fileNames[i]);
+                if (!this.config[i].toFile().exists()) {
 
-                    Files.copy(this.mainClass.getClassLoader().getResourceAsStream("assets/" + this.modID + "/" + this.fileNames[i]), filePathString, StandardCopyOption.REPLACE_EXISTING);
+                    try {
 
-                } catch (DirectoryNotEmptyException er) {
+                        Files.copy(this.mainClass.getClassLoader().getResourceAsStream("assets/" + this.modID + "/" + this.fileNames[i]), filePathString, StandardCopyOption.REPLACE_EXISTING);
 
+                    } catch (DirectoryNotEmptyException er) {
+
+
+                    }
 
                 }
 
-            }
+                HoconConfigurationLoader.builder().setPath(this.configPath).setFile(new File(this.fileNames[i])).build();
+                config[i] = this.configPath.resolve(this.fileNames[i]);
 
-            HoconConfigurationLoader.builder().setPath(this.configPath).setFile(new File(this.fileNames[i])).build();
-            config[i] = this.configPath.resolve(this.fileNames[i]);
+            } catch (Exception e) {
+
+                this.logger.error("Could not initialize file: " + currentFile + ".");
+
+            }
 
         }
 
@@ -77,10 +87,12 @@ public class BasicConfigManager {
 
     public void load() {
 
+        String currentFile = "";
         try {
 
             for (int i = 0; i < this.fileNames.length; i++) {
 
+                currentFile = this.fileNames[i];
                 configLoad.add(i, HoconConfigurationLoader.builder().setPath(config[i]).build());
                 configNode[i] = HoconConfigurationLoader.builder().setPath(config[i]).build().load();
 
@@ -88,7 +100,7 @@ public class BasicConfigManager {
 
         } catch (IOException e) {
 
-            this.logger.error(this.modName + " configuration could not load.");
+            this.logger.error(this.modName + " configuration could not load file: " + currentFile + ".");
             e.printStackTrace();
 
         }
@@ -97,14 +109,17 @@ public class BasicConfigManager {
 
     public void save() {
 
+        String currentFile = "";
         for (int i = 0; i < this.fileNames.length; i++) {
 
             try {
 
+                currentFile = this.fileNames[i];
                 configLoad.get(i).save(configNode[i]);
 
             } catch (IOException e) {
 
+                this.logger.error("Could not save file: " + currentFile + ".");
                 e.printStackTrace();
 
             }

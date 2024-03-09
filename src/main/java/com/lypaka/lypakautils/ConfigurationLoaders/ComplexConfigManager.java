@@ -1,6 +1,5 @@
 package com.lypaka.lypakautils.ConfigurationLoaders;
 
-import com.lypaka.lypakautils.LypakaUtils;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;

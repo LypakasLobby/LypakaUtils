@@ -1,9 +1,9 @@
 package com.lypaka.lypakautils.ConfigurationLoaders;
 
-import org.apache.logging.log4j.Logger;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;

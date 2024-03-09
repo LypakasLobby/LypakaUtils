@@ -34,7 +34,7 @@ public class LypakaUtils {
         logger.info("Loading LypakaUtils");
         MinecraftForge.EVENT_BUS.register(this);
         Path dir = ConfigUtils.checkDir(Paths.get("./config/lypakautils"));
-        String[] files = new String[]{"lypakautils.conf", "permission-groups.conf", "command-executors.conf"};
+        String[] files = new String[]{"lypakautils.conf", "permission-groups.conf"};
         configManager = new BasicConfigManager(files, dir, LypakaUtils.class, MOD_NAME, MOD_ID, logger);
         configManager.init();
         playerConfigManager = new PlayerConfigManager("account.conf", "accounts", dir, LypakaUtils.class, MOD_NAME, MOD_ID, logger);

@@ -65,7 +65,7 @@ jar {
 shadowJar {
     destinationDirectory = file("$buildDir/libs")
     configurations = [project.configurations.shadow]
-    archiveName = 'LypakaUtils-1.16.5-0.4.8.jar'
+    archiveName = 'LypakaUtils-1.16.5-0.5.1.jar'
 
 
     exclude "**/module-info.class"

@@ -1,11 +1,18 @@
 package com.lypaka.lypakautils.MiscHandlers;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBallRegistry;
 import com.pixelmonmod.pixelmon.api.pokemon.species.Species;
+import com.pixelmonmod.pixelmon.api.pokemon.species.gender.Gender;
+import com.pixelmonmod.pixelmon.api.registries.PixelmonSpecies;
+import com.pixelmonmod.pixelmon.api.storage.NbtKeys;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
+import com.pixelmonmod.pixelmon.api.util.helpers.RandomHelper;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +129,63 @@ public class PixelmonHelpers {
         }
 
         return pokemon;
+
+    }
+
+    public static Pokemon fixPokemonIVsAndGender (Pokemon pokemon) {
+
+        int[] ivs = new int[6];
+        int perfectCount = 0;
+        for (int i = 0; i < 6; i++) {
+
+            int value = RandomHelper.getRandomNumberBetween(1, 31);
+            ivs[i] = value;
+            if (value == 31) perfectCount++;
+
+        }
+        if (PixelmonSpecies.isLegendary(pokemon.getSpecies()) || PixelmonSpecies.isMythical(pokemon.getSpecies()) || PixelmonSpecies.isUltraBeast(pokemon.getSpecies())) {
+
+            if (perfectCount < 3) {
+
+                List<Integer> notPerfectIVSlots = new ArrayList<>();
+                for (int i = 0; i < 6; i++) {
+
+                    if (ivs[i] != 31) {
+
+                        notPerfectIVSlots.add(i);
+
+                    }
+
+                }
+
+                for (int i = perfectCount; i <= 3; i++) {
+
+                    int slot = RandomHelper.getRandomElementFromList(notPerfectIVSlots);
+                    ivs[slot] = 31;
+                    notPerfectIVSlots.removeIf(e -> e == slot);
+
+                }
+
+            }
+
+        }
+        pokemon.getIVs().fillFromArray(ivs);
+        pokemon.setGender(Gender.getRandomGender(pokemon.getForm()));
+
+        return pokemon;
+
+    }
+
+    public static String getActualPokeBallID (ItemStack pokeBall) {
+
+        String ball = "poke_ball";
+        if (pokeBall.hasTag()) {
+
+            ball = PokeBallRegistry.getPokeBall(pokeBall.getTag().getString(NbtKeys.POKE_BALL_ID)).getValue().get().getName();
+
+        }
+
+        return "pixelmon:" + ball.replace(" ", "_").toLowerCase();
 
     }
 
