@@ -41,7 +41,6 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
     compileOnly fileTree(dir: 'C:\\Users\\ryan9\\Documents\\GitHub\\LIBRARIES', include: ['Reforged.jar'])
-    compileOnly fileTree(dir: 'C:\\Users\\ryan9\\Documents\\GitHub\\LIBRARIES', include: ['spigot-1.16.5.jar'])
     shadow group: 'ninja.leaping.configurate', name: 'configurate-hocon', version: '3.7.1'
     shadow group: 'ninja.leaping.configurate', name: 'configurate-core', version: '3.7.1'
     implementation 'com.zaxxer:HikariCP:4.0.3'

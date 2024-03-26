@@ -1,12 +1,16 @@
 package com.lypaka.lypakautils.Listeners;
 
 import com.lypaka.lypakautils.ConfigGetters;
+import com.lypaka.lypakautils.Listeners.BerryEvents.BerryBlockInteractListener;
 import com.lypaka.lypakautils.LypakaUtils;
 import com.lypaka.lypakautils.MiscHandlers.PixelmonHelpers;
+import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonBuilder;
 import com.pixelmonmod.pixelmon.api.registries.PixelmonSpecies;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 
@@ -19,23 +23,30 @@ public class ServerStartedListener {
     @SubscribeEvent
     public static void onServerStarted (FMLServerStartedEvent event) {
 
-        if (!ConfigGetters.loadPokemonTypeMap) return;
-        PixelmonSpecies.getAll().forEach(species -> {
+        if (ModList.get().isLoaded("pixelmon")) {
 
-            species.getForms().forEach(form -> {
+            Pixelmon.EVENT_BUS.register(new BattleListeners());
+            MinecraftForge.EVENT_BUS.register(new BerryBlockInteractListener());
 
-                form.getTypes().forEach(type -> {
+            if (!ConfigGetters.loadPokemonTypeMap) return;
+            PixelmonSpecies.getAll().forEach(species -> {
 
-                    List<Pokemon> speciesList = new ArrayList<>();
-                    if (PixelmonHelpers.pokemonTypeMap.containsKey(type.getName())) speciesList = PixelmonHelpers.pokemonTypeMap.get(type.getName());
-                    speciesList.add(PokemonBuilder.builder().species(species).form(form).build());
-                    PixelmonHelpers.pokemonTypeMap.put(type.getName(), speciesList);
+                species.getForms().forEach(form -> {
+
+                    form.getTypes().forEach(type -> {
+
+                        List<Pokemon> speciesList = new ArrayList<>();
+                        if (PixelmonHelpers.pokemonTypeMap.containsKey(type.getName())) speciesList = PixelmonHelpers.pokemonTypeMap.get(type.getName());
+                        speciesList.add(PokemonBuilder.builder().species(species).form(form).build());
+                        PixelmonHelpers.pokemonTypeMap.put(type.getName(), speciesList);
+
+                    });
 
                 });
 
             });
 
-        });
+        }
 
     }
 

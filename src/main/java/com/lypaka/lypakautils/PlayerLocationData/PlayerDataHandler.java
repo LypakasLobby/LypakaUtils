@@ -15,7 +15,7 @@ public class PlayerDataHandler {
 
     }
 
-    public static int calculateStepsTaken (UUID uuid, int currentX, int currentZ) {
+    public static int calculateStepsTaken (UUID uuid, int currentX, int currentY, int currentZ) {
 
         PlayerLocation location = playerLocationMap.get(uuid);
         int lastX = location.getLastX();
@@ -24,8 +24,10 @@ public class PlayerDataHandler {
         int changeZ = currentZ - lastZ;
 
         location.setCurrentX(currentX);
+        location.setCurrentY(currentY);
         location.setCurrentZ(currentZ);
         location.setLastX(currentX);
+        location.setLastY(currentY);
         location.setLastZ(currentZ);
         if (changeX == -currentX && changeZ == -currentZ) {
 

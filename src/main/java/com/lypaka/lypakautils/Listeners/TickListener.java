@@ -75,9 +75,10 @@ public class TickListener {
 
                 ServerPlayerEntity player = entry.getValue();
                 int currentX = player.getPosition().getX();
+                int currentY = player.getPosition().getY();
                 int currentZ = player.getPosition().getZ();
                 World world = player.getEntityWorld();
-                int steps = PlayerDataHandler.calculateStepsTaken(player.getUniqueID(), currentX, currentZ);
+                int steps = PlayerDataHandler.calculateStepsTaken(player.getUniqueID(), currentX, currentY, currentZ);
                 if (steps > 0) {
 
                     String blockID = world.getBlockState(player.getPosition()).getBlock().getRegistryName().toString();

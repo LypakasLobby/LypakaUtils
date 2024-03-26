@@ -35,10 +35,11 @@ public class JoinListener {
         if (!PlayerDataHandler.playerLocationMap.containsKey(player.getUniqueID())) {
 
             int x = player.getPosition().getX();
+            int y = player.getPosition().getY();
             int z = player.getPosition().getZ();
             String dimension = WorldHelpers.getEntityDimensionID(player);
             String world = WorldMap.getWorldName(player);
-            PlayerLocation location = new PlayerLocation(x, z, x, z, dimension, dimension, world, world);
+            PlayerLocation location = new PlayerLocation(x, y, z, x, y, z, dimension, dimension, world, world);
             PlayerDataHandler.playerLocationMap.put(player.getUniqueID(), location);
 
         }

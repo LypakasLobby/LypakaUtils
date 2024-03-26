@@ -1,5 +1,6 @@
 package com.lypaka.lypakautils.Commands;
 
+import com.lypaka.lypakautils.Commands.MiscCommands.ReturnCommand;
 import com.lypaka.lypakautils.LypakaUtils;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,6 +20,9 @@ public class LypakaUtilsCommand {
 
         new PermissionCommand(event.getDispatcher());
         new ReloadCommand(event.getDispatcher());
+
+        // MiscCommands
+        new ReturnCommand(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
 
