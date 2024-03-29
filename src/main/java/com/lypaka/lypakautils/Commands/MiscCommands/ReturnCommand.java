@@ -11,56 +11,65 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ReturnCommand {
+
+    private static final List<String> ALIASES = Arrays.asList("return", "respawn", "lreturn", "goback", "returnbacktothelasttimethatyoudiedormaybeifyoulostabattleintheultraspace", "deathpoint", "death");
 
     public ReturnCommand (CommandDispatcher<CommandSource> dispatcher) {
 
-        dispatcher.register(
-                Commands.literal("return")
-                        .executes(c -> {
+        for (String a : ALIASES) {
 
-                            if (c.getSource().getEntity() instanceof ServerPlayerEntity) {
+            dispatcher.register(
+                    Commands.literal(a)
+                            .executes(c -> {
 
-                                ServerPlayerEntity player = (ServerPlayerEntity) c.getSource().getEntity();
-                                if (!PermissionHandler.hasPermission(player, "lypakautils.command.return")) {
+                                if (c.getSource().getEntity() instanceof ServerPlayerEntity) {
 
-                                    player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUniqueID());
-                                    return 0;
+                                    ServerPlayerEntity player = (ServerPlayerEntity) c.getSource().getEntity();
+                                    if (!PermissionHandler.hasPermission(player, "lypakautils.command.return")) {
 
-                                }
+                                        player.sendMessage(FancyText.getFormattedText("&cYou don't have permission to use this command!"), player.getUniqueID());
+                                        return 0;
 
-                                PlayerLocation playerLocation = PlayerDataHandler.playerLocationMap.get(player.getUniqueID());
-                                String lastDeathLocation = playerLocation.getLastDeathLocation();
-                                if (lastDeathLocation != null) {
+                                    }
 
-                                    String dimension = lastDeathLocation.split(",")[0];
-                                    int x = Integer.parseInt(lastDeathLocation.split(",")[1]);
-                                    int y = Integer.parseInt(lastDeathLocation.split(",")[2]);
-                                    int z = Integer.parseInt(lastDeathLocation.split(",")[3]);
-                                    String currentDimension = playerLocation.getCurrentDimension();
-                                    if (dimension.equalsIgnoreCase(currentDimension)) {
+                                    PlayerLocation playerLocation = PlayerDataHandler.playerLocationMap.get(player.getUniqueID());
+                                    String lastDeathLocation = playerLocation.getLastDeathLocation();
+                                    if (lastDeathLocation != null) {
 
-                                        WorldHelpers.teleportPlayer(player, WorldMap.getWorldName(player), x, y, z, player.rotationYaw, player.rotationPitch);
+                                        String dimension = lastDeathLocation.split(",")[0];
+                                        int x = Integer.parseInt(lastDeathLocation.split(",")[1]);
+                                        int y = Integer.parseInt(lastDeathLocation.split(",")[2]);
+                                        int z = Integer.parseInt(lastDeathLocation.split(",")[3]);
+                                        String currentDimension = playerLocation.getCurrentDimension();
+                                        if (dimension.equalsIgnoreCase(currentDimension)) {
+
+                                            WorldHelpers.teleportPlayer(player, WorldMap.getWorldName(player), x, y, z, player.rotationYaw, player.rotationPitch);
+
+                                        } else {
+
+                                            WorldHelpers.teleportPlayerToDimension(player, dimension, x, y, z, player.rotationYaw, player.rotationPitch);
+
+                                        }
+                                        player.sendMessage(FancyText.getFormattedText("&aSuccessfully returned you to your last known death location!"), player.getUniqueID());
 
                                     } else {
 
-                                        WorldHelpers.teleportPlayerToDimension(player, dimension, x, y, z, player.rotationYaw, player.rotationPitch);
+                                        player.sendMessage(FancyText.getFormattedText("&cNo death location recorded!"), player.getUniqueID());
 
                                     }
-                                    player.sendMessage(FancyText.getFormattedText("&aSuccessfully returned you to your last known death location!"), player.getUniqueID());
-
-                                } else {
-
-                                    player.sendMessage(FancyText.getFormattedText("&cNo death location recorded!"), player.getUniqueID());
 
                                 }
 
-                            }
+                                return 1;
 
-                            return 1;
+                            })
+            );
 
-                        })
-        );
+        }
 
     }
 
