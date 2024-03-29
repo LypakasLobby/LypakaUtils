@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocationException;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.util.Locale;
@@ -64,15 +65,25 @@ public class WorldHelpers {
 
         final RegistryKey<World> destination = getDimension(dimension);
         if (player.world.getDimensionKey() != destination && player.getServer() != null) {
+
             getWorld(destination).ifPresent(world -> {
-                if (destination == DrownedWorld.WORLD) {
-                    player.getPersistentData().putDouble("PortalX", player.getPosX());
-                    player.getPersistentData().putDouble("PortalY", player.getPosY());
-                    player.getPersistentData().putDouble("PortalZ", player.getPosZ());
-                    player.getPersistentData().putString("PortalD", player.getServerWorld().getDimensionKey().getLocation().toString());
+
+                if (ModList.get().isLoaded("pixelmon")) {
+
+                    if (destination == DrownedWorld.WORLD) {
+
+                        player.getPersistentData().putDouble("PortalX", player.getPosX());
+                        player.getPersistentData().putDouble("PortalY", player.getPosY());
+                        player.getPersistentData().putDouble("PortalZ", player.getPosZ());
+                        player.getPersistentData().putString("PortalD", player.getServerWorld().getDimensionKey().getLocation().toString());
+                    }
+
                 }
+
                 player.teleport(world, x, y, z, yaw, pitch);
+
             });
+
         }
 
     }
