@@ -42,7 +42,7 @@ public abstract class PixelmonBerryEvent extends Event {
 
     public static class Post extends PixelmonBerryEvent {
 
-        private ItemStack berry;
+        private final ItemStack berry;
         private int count;
 
         public Post (ServerPlayerEntity player, String berryID, ItemStack berry) {
