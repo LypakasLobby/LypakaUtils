@@ -47,4 +47,13 @@ public class LogicalTMBuilder {
 
     }
 
+    public static ItemStack buildDisc (String discType, int attackID, int generation) {
+
+        discType = discType.toLowerCase();
+        ItemStack tm = ItemStackBuilder.buildFromStringID("pixelmon:" + discType + "_gen" + generation);
+        tm.getOrCreateTag().putInt("tm", attackID);
+        return tm;
+
+    }
+
 }
