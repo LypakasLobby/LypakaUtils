@@ -23,6 +23,7 @@ public class ServerStartedListener {
     @SubscribeEvent
     public static void onServerStarted (FMLServerStartedEvent event) {
 
+        MinecraftForge.EVENT_BUS.register(new TickListener());
         if (ModList.get().isLoaded("pixelmon")) {
 
             Pixelmon.EVENT_BUS.register(new BattleListeners());

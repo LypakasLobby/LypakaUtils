@@ -68,6 +68,7 @@ public class TickListener {
 
         if (!ConfigGetters.tickListenerEnabled) return;
 
+        count++;
         if (count >= 20) {
 
             count = -1;
