@@ -1,6 +1,7 @@
 package com.lypaka.lypakautils.Listeners.BerryEvents;
 
 import com.lypaka.lypakautils.API.PixelmonBerryEvent;
+import com.lypaka.lypakautils.ConfigGetters;
 import com.lypaka.lypakautils.MiscHandlers.ItemStackBuilder;
 import com.pixelmonmod.pixelmon.blocks.BerryLeavesBlock;
 import com.pixelmonmod.pixelmon.init.registry.BlockRegistration;
@@ -23,6 +24,7 @@ public class BerryBlockInteractListener {
         if (event.getSide() == LogicalSide.CLIENT) return;
         if (event.getHand() == Hand.OFF_HAND) return;
 
+        if (!ConfigGetters.useBetterBerryPicker) return;
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         Block block = player.world.getBlockState(event.getPos()).getBlock();
         String blockID = block.getRegistryName().toString();

@@ -16,6 +16,7 @@ public class ConfigGetters {
     public static boolean loadPokemonTypeMap;
     public static Map<String, String> messages;
     public static Map<String, Map<String, String>> permissionGroups;
+    public static boolean useBetterBerryPicker;
 
     public static void load() throws ObjectMappingException {
 
@@ -68,6 +69,18 @@ public class ConfigGetters {
             messages.put("Fishing-Rod", "&eFishing rods are not enabled in this world!");
             messages.put("Sprite-Removal-Warning", "&eYou have 10 seconds to remove the Pixelmon sprite you are wearing or it will be deleted.");
             LypakaUtils.configManager.getConfigNode(0, "Messages").setValue(messages);
+
+        }
+        useBetterBerryPicker = true;
+        if (LypakaUtils.configManager.getConfigNode(0, "Use-Better-Berry-Picking").isVirtual()) {
+
+            if (!save) save = true;
+            LypakaUtils.configManager.getConfigNode(0, "Use-Better-Berry-Picking").setValue(true);
+            LypakaUtils.configManager.getConfigNode(0, "Use-Better-Berry-Picking").setComment("If false, will disable my better handler for Berry picking");
+
+        } else {
+
+            useBetterBerryPicker = LypakaUtils.configManager.getConfigNode(0, "Use-Better-Berry-Picking").getBoolean();
 
         }
         permissionGroups = LypakaUtils.configManager.getConfigNode(1, "Groups").getValue(new TypeToken<Map<String, Map<String, String>>>() {});
