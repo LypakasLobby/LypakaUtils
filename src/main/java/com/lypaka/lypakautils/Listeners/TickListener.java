@@ -90,9 +90,14 @@ public class TickListener {
 
                     } else {
 
-                        PlayerDataHandler.setLastKnownLandLocation(player.getUniqueID(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
-                        PlayerMovementEvent.Land landEvent = new PlayerMovementEvent.Land(player, steps, blockID);
-                        MinecraftForge.EVENT_BUS.post(landEvent);
+                        if (player.isOnGround()) {
+
+                            PlayerDataHandler.setLastKnownLandLocation(player.getUniqueID(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+                            PlayerMovementEvent.Land landEvent = new PlayerMovementEvent.Land(player, steps, blockID);
+                            MinecraftForge.EVENT_BUS.post(landEvent);
+
+                        }
+
 
                     }
                     String dimension = WorldHelpers.getEntityDimensionID(player);

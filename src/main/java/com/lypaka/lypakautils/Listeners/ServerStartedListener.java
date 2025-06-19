@@ -1,7 +1,6 @@
 package com.lypaka.lypakautils.Listeners;
 
 import com.lypaka.lypakautils.ConfigGetters;
-import com.lypaka.lypakautils.Listeners.BerryEvents.BerryBlockInteractListener;
 import com.lypaka.lypakautils.LypakaUtils;
 import com.lypaka.lypakautils.MiscHandlers.PixelmonHelpers;
 import com.pixelmonmod.pixelmon.Pixelmon;
@@ -27,7 +26,7 @@ public class ServerStartedListener {
         if (ModList.get().isLoaded("pixelmon")) {
 
             Pixelmon.EVENT_BUS.register(new BattleListeners());
-            MinecraftForge.EVENT_BUS.register(new BerryBlockInteractListener());
+            MinecraftForge.EVENT_BUS.register(new BlockInteractListener());
 
             if (!ConfigGetters.loadPokemonTypeMap) return;
             PixelmonSpecies.getAll().forEach(species -> {
